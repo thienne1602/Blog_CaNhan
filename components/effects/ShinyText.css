@@ -1,0 +1,40 @@
+.shiny-text {
+  /* Light mode - dark text with shine */
+  background: linear-gradient(
+    120deg,
+    rgba(17, 24, 39, 0.8) 40%,
+    rgba(79, 70, 229, 1) 50%,
+    rgba(17, 24, 39, 0.8) 60%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  animation: shine linear infinite;
+}
+
+/* Dark mode - brighter gradient with colors */
+:root.dark .shiny-text {
+  background: linear-gradient(
+    120deg,
+    /* rgba(255, 255, 255, 0) 40%,
+    rgba(5, 31, 65, 0) 50%,
+    rgba(255, 255, 255, 0) 60% */
+  );
+  filter: brightness(1.2);
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes shine {
+  0% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: -100%;
+  }
+}
+
+.shiny-text.disabled {
+  animation: none;
+}

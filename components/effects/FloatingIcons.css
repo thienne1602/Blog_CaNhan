@@ -1,0 +1,21 @@
+.floating-icons-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.floating-icon {
+  position: absolute;
+  font-size: 2.5rem;
+  filter: blur(1px);
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .floating-icon {
+    font-size: 1.8rem;
+  }
+}

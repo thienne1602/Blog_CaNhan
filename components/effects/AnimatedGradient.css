@@ -1,0 +1,97 @@
+.animated-gradient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  transition: background 0.3s ease;
+}
+
+.dark .animated-gradient-bg {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.gradient-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: blob-movement 20s ease-in-out infinite;
+  transition: opacity 0.3s ease;
+}
+
+.blob-1 {
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  left: -200px;
+  background: linear-gradient(
+    135deg,
+    rgba(79, 70, 229, 0.3),
+    rgba(124, 58, 237, 0.3)
+  );
+  animation-delay: 0s;
+}
+
+.blob-2 {
+  width: 500px;
+  height: 500px;
+  top: 50%;
+  right: -150px;
+  background: linear-gradient(
+    135deg,
+    rgba(236, 72, 153, 0.3),
+    rgba(239, 68, 68, 0.3)
+  );
+  animation-delay: 4s;
+}
+
+.blob-3 {
+  width: 550px;
+  height: 550px;
+  bottom: -200px;
+  left: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.3),
+    rgba(147, 51, 234, 0.3)
+  );
+  animation-delay: 8s;
+}
+
+@keyframes blob-movement {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(50px, -50px) scale(1.1);
+  }
+  50% {
+    transform: translate(-30px, 40px) scale(0.9);
+  }
+  75% {
+    transform: translate(40px, 60px) scale(1.05);
+  }
+}
+
+@media (max-width: 768px) {
+  .gradient-blob {
+    filter: blur(60px);
+  }
+
+  .blob-1 {
+    width: 400px;
+    height: 400px;
+  }
+
+  .blob-2 {
+    width: 350px;
+    height: 350px;
+  }
+
+  .blob-3 {
+    width: 380px;
+    height: 380px;
+  }
+}
