@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           # ensure any nested submodules or nested repos are fetched
-          submodules: 'recursive'
+          submodules: "recursive"
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -35,11 +35,9 @@ jobs:
         run: |
           echo "PWD: $(pwd)"
           echo "List root files:"; ls -la
-          echo "List personal-blog (if present):"; ls -la personal-blog || true
 
-      - name: Install & build (personal-blog)
+      - name: Install & build (repo root)
         run: |
-          cd personal-blog
           echo "Now in: $(pwd)";
           npm ci
           npm run build
@@ -47,7 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./personal-blog/out
+          path: ./out
 
   deploy:
     needs: build
