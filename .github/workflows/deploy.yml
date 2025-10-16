@@ -1,4 +1,4 @@
-name: Deploy Next.js SSG to GitHub Pages (subfolder)
+name: Deploy Next.js SSG to GitHub Pages
 
 on:
   push:
@@ -45,6 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
