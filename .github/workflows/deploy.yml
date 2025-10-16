@@ -20,6 +20,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # ensure any nested submodules or nested repos are fetched
+          submodules: 'recursive'
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -27,13 +31,18 @@ jobs:
           node-version: "18"
           cache: "npm"
 
-      - name: Install dependencies (personal-blog)
-        run: npm ci
-        working-directory: ./personal-blog
+      - name: Show repo layout (debug)
+        run: |
+          echo "PWD: $(pwd)"
+          echo "List root files:"; ls -la
+          echo "List personal-blog (if present):"; ls -la personal-blog || true
 
-      - name: Build with Next.js (personal-blog)
-        run: npm run build
-        working-directory: ./personal-blog
+      - name: Install & build (personal-blog)
+        run: |
+          cd personal-blog
+          echo "Now in: $(pwd)";
+          npm ci
+          npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
