@@ -48,6 +48,8 @@ jobs:
           fi
 
       - name: Install & build (repo root)
+        env:
+          NEXT_PUBLIC_BASE_PATH: "/Blog_CaNhan"
         run: |
           echo "Now in: $(pwd)";
           npm ci
