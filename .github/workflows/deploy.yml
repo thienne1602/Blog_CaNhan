@@ -55,6 +55,22 @@ jobs:
           npm ci
           npm run build
 
+      - name: Ensure images in output
+        run: |
+          echo "Listing out/ before copy:"; ls -la out || true
+          # copy public images into root out/images so requests to /images/ succeed
+          if [ -d public/images ]; then
+            mkdir -p out/images
+            cp -r public/images/* out/images/ || true
+            echo "Copied public/images to out/images"
+          fi
+          # also copy into basePath subfolder so requests to /Blog_CaNhan/images/ succeed
+          if [ -d public/images ]; then
+            mkdir -p out/Blog_CaNhan/images
+            cp -r public/images/* out/Blog_CaNhan/images/ || true
+            echo "Copied public/images to out/Blog_CaNhan/images"
+          fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
