@@ -36,6 +36,17 @@ jobs:
           echo "PWD: $(pwd)"
           echo "List root files:"; ls -la
 
+      - name: Ensure public images
+        run: |
+          # If images exist in personal-blog/public, copy them into root public so Next export includes them
+          if [ -d personal-blog/public/images ]; then
+            mkdir -p public/images
+            cp -r personal-blog/public/images/* public/images/ || true
+            echo "Copied personal-blog images to root public/images"
+          else
+            echo "No personal-blog/public/images found"
+          fi
+
       - name: Install & build (repo root)
         run: |
           echo "Now in: $(pwd)";
