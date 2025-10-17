@@ -71,6 +71,18 @@ jobs:
             echo "Copied public/images to out/Blog_CaNhan/images"
           fi
 
+      - name: Rewrite absolute image paths in HTML to include basePath
+        run: |
+          # Replace occurrences of "/images/" in generated HTML with "/Blog_CaNhan/images/"
+          if [ -d out ]; then
+            echo "Rewriting /images/ -> /Blog_CaNhan/images/ in HTML files"
+            find out -type f -name '*.html' -print0 | xargs -0 sed -i 's|/images/|/Blog_CaNhan/images/|g' || true
+            # also rewrite any absolute site URLs
+            find out -type f -name '*.html' -print0 | xargs -0 sed -i 's|https://thienne1602.github.io/images/|/Blog_CaNhan/images/|g' || true
+          else
+            echo "out directory not found"
+          fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
