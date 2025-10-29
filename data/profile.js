@@ -1,9 +1,12 @@
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export const personalInfo = {
   fullName: "Thạch Văn Ngọc Thiên",
   headline:
     "Sinh viên năm 4 HUTECH | Fullstack Developer | Đam mê lập trình mạng",
   bio: `Xin chào, mình là Thiên - sinh viên năm 4 chuyên ngành Hệ thống Thông tin tại HUTECH. Mình dành nhiều thời gian nghiên cứu kiến trúc hệ thống, xây dựng API và tối ưu hóa các ứng dụng realtime bằng Java, JavaScript. Blog này được tạo để lưu lại những kinh nghiệm học tập, dự án cá nhân, cũng như chia sẻ kiến thức hữu ích cho các bạn sinh viên yêu thích lập trình mạng.`,
-  avatar: "/images/profile.jpg",
+  // Use NEXT_PUBLIC_BASE_PATH when the app is served from a subpath (GitHub Pages)
+  avatar: "/images/avatar.jpg", // Use plain path for local dev. Add BASE_PATH for GitHub Pages
   location: "Thành phố Hồ Chí Minh, Việt Nam",
   email: "ngocthien160224@gmail.com",
   phone: "0948283916",
@@ -113,5 +116,29 @@ export const projects = [
     ],
     repo: "https://github.com/thienne1602/hutech-lab-api",
     demo: "https://documenter.getpostman.com/view/12345678/2s93zB3HUf",
+  },
+];
+
+export const certificates = [
+  {
+    title: "JavaScript Essentials 1",
+    issuer: "Online Course",
+    date: "2025-10-22",
+    credentialUrl: `${BASE_PATH}/images/certs/JavaScriptEssentials1Update20251022-31-68k6oe.pdf`,
+    image: `${BASE_PATH}/images/certs/JavaScriptEssentials1Update20251022-31-68k6oe.pdf`,
+  },
+  {
+    title: "JavaScript Essentials 2",
+    issuer: "Online Course",
+    date: "2025-10-22",
+    credentialUrl: `${BASE_PATH}/images/certs/JavaScriptEssentials2Update20251022-32-pb5aso.pdf`,
+    image: `${BASE_PATH}/images/certs/JavaScriptEssentials2Update20251022-32-pb5aso.pdf`,
+  },
+  {
+    title: "Networking Basics",
+    issuer: "Online Course",
+    date: "2025-10-22",
+    credentialUrl: `${BASE_PATH}/images/certs/NetworkingBasicsUpdate20251022-31-qhr2b1.pdf`,
+    image: `${BASE_PATH}/images/certs/NetworkingBasicsUpdate20251022-31-qhr2b1.pdf`,
   },
 ];

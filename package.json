@@ -11,27 +11,31 @@
     "deploy": "gh-pages -d out"
   },
   "dependencies": {
+    "framer-motion": "^10.12.4",
+    "gsap": "^3.13.0",
+    "lucide-react": "^0.263.1",
+    "mathjs": "^15.0.0",
+    "next": "^14.2.33",
+    "ogl": "^1.0.11",
+    "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "next": "^14.2.0",
-    "prismjs": "^1.29.0",
-    "framer-motion": "^10.12.4",
-    "lucide-react": "^0.263.1",
     "react-markdown": "^9.0.1",
-    "remark-gfm": "^4.0.0"
+    "remark-gfm": "^4.0.0",
+    "three": "^0.180.0"
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@types/node": "^20.0.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0",
     "autoprefixer": "^10.4.14",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.2.0",
     "gh-pages": "^5.0.0",
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.2",
-    "@tailwindcss/line-clamp": "^0.4.4",
-    "eslint": "^8.0.0",
-    "eslint-config-next": "^14.2.0"
+    "typescript": "^5.0.0"
   },
   "author": {
     "name": "Thạch Văn Ngọc Thiên",

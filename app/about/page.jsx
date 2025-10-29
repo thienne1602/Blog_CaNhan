@@ -2,7 +2,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { personalInfo } from "@/data/profile";
+import { personalInfo, certificates } from "@/data/profile";
 import { blogPosts } from "@/data/blogData";
 import GradientTextEffect from "@/components/effects/GradientTextEffect";
 import ShinyTextEffect from "@/components/effects/ShinyTextEffect";
@@ -342,6 +342,100 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Certificates Section */}
+      {certificates && certificates.length > 0 && (
+        <section id="certificates" className="relative py-20 px-4">
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <GradientTextEffect
+                className="text-5xl font-black mb-4"
+                colors={["#3B82F6", "#8B5CF6", "#EC4899"]}
+              >
+                Certificates
+              </GradientTextEffect>
+              <p className="text-xl text-gray-600 dark:text-gray-400">
+                A selection of certifications and course completions I've
+                earned.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {certificates.map((cert) => (
+                <FloatingCard key={cert.title} delay={0}>
+                  <SpotlightCardEffect>
+                    <div className="p-6 rounded-2xl bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-all h-full flex flex-col">
+                      {cert.image &&
+                        (cert.image.toLowerCase().endsWith(".pdf") ? (
+                          <div className="mb-4 h-28 w-full rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                            <a
+                              href={cert.image}
+                              target="_blank"
+                              rel="noreferrer noopener"
+                              className="flex flex-col items-center gap-2"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                className="w-12 h-12 text-red-600"
+                                fill="currentColor"
+                              >
+                                <path d="M6 2h7l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+                                <path d="M13 3v5h5" fillOpacity="0.2" />
+                              </svg>
+                              <span className="text-xs text-gray-600 dark:text-gray-300">
+                                Open PDF
+                              </span>
+                            </a>
+                          </div>
+                        ) : (
+                          <div className="mb-4 h-28 w-full relative rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+                            <Image
+                              src={cert.image}
+                              alt={cert.title}
+                              fill
+                              className="object-contain"
+                            />
+                          </div>
+                        ))}
+
+                      <h4 className="text-lg font-bold text-gray-800 dark:text-white">
+                        {cert.title}
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        {cert.issuer} • {cert.date}
+                      </p>
+
+                      <div className="mt-auto pt-4">
+                        {cert.credentialUrl ? (
+                          <a
+                            href={cert.credentialUrl}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="inline-block px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold text-sm"
+                          >
+                            View credential
+                          </a>
+                        ) : (
+                          <span className="text-sm text-gray-500">
+                            No link provided
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </SpotlightCardEffect>
+                </FloatingCard>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Timeline Section */}
       <section id="timeline" className="relative py-20 px-4">

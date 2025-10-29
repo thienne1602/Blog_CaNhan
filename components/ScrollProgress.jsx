@@ -6,16 +6,22 @@ const ScrollProgress = () => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const scrollTop =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      const docHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      setProgress(scrolled);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollTop =
+            document.documentElement.scrollTop || document.body.scrollTop;
+          const docHeight =
+            document.documentElement.scrollHeight -
+            document.documentElement.clientHeight;
+          const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          setProgress(scrolled);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);

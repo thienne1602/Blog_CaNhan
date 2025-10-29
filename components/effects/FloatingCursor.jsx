@@ -14,8 +14,8 @@ const FloatingCursor = () => {
     const handleMouseMove = (e) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
 
-      // Create particle trail
-      if (Math.random() > 0.8) {
+      // Create particle trail (giảm số lượng để tránh lag)
+      if (Math.random() > 0.9) {
         createParticle(e.clientX, e.clientY);
       }
     };
