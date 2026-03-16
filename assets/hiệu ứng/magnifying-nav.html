@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Credits to the owner "Una Kravets" -->
+    <title>Magnifying Nav</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
+    />
+    <style>
+      :root {
+        --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+        --ease-pop: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      body {
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: sans-serif;
+      }
+
+      .action-bar {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background-color: #fcfcfc;
+        border: 1px solid lightgray;
+        border-radius: 1rem;
+        padding: 0.5rem;
+        gap: 0.25rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        isolation: isolate;
+      }
+
+      .nav-highlight {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 3rem;
+        height: calc(100% - 0.45rem);
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255, 255, 255, 0.9),
+          rgba(255, 255, 255, 0.45) 48%,
+          rgba(230, 230, 230, 0.25)
+        );
+        box-shadow:
+          0 6px 16px rgba(0, 0, 0, 0.14),
+          inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(2px);
+        pointer-events: none;
+        transform: translate3d(0, -50%, 0);
+        will-change: transform, width, opacity;
+        z-index: 0;
+      }
+
+      .nav-highlight::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.5),
+          rgba(255, 255, 255, 0)
+        );
+      }
+
+      button {
+        position: relative;
+        z-index: 1;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition:
+          background-color 0.22s var(--ease-out-soft),
+          color 0.22s var(--ease-out-soft),
+          transform 0.22s var(--ease-pop);
+      }
+
+      .material-symbols-outlined {
+        background: none;
+        font-size: 24px;
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 300,
+          "GRAD" 0,
+          "opsz" 24;
+        transition:
+          filter 0.22s var(--ease-out-soft),
+          transform 0.22s var(--ease-pop);
+      }
+
+      button:hover,
+      button:focus {
+        background-color: rgba(255, 255, 255, 0.35);
+        transform: translateY(-1px);
+      }
+
+      button:focus {
+        outline: none;
+      }
+
+      .selected {
+        background-color: transparent;
+        color: red;
+      }
+
+      .selected:hover,
+      .selected:focus {
+        background-color: transparent;
+      }
+
+      .selected .material-symbols-outlined {
+        filter: drop-shadow(0 0 4px tomato);
+        font-variation-settings:
+          "FILL" 1,
+          "wght" 300,
+          "GRAD" 0,
+          "opsz" 24;
+        transform: scale(1.05);
+      }
+
+      /* increase clickable area */
+      button::before {
+        content: "";
+        position: absolute;
+        inset: -0.4rem;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="action-bar">
+      <div class="nav-highlight" aria-hidden="true"></div>
+      <button>
+        <span class="material-symbols-outlined">person</span>
+      </button>
+      <button>
+        <span class="material-symbols-outlined">push_pin</span>
+      </button>
+      <button class="selected">
+        <span class="material-symbols-outlined">alternate_email</span>
+      </button>
+      <button>
+        <span class="material-symbols-outlined">mail</span>
+      </button>
+      <button>
+        <span class="material-symbols-outlined">edit</span>
+      </button>
+      <button>
+        <span class="material-symbols-outlined">cases</span>
+      </button>
+    </div>
+
+    <script>
+      const actionBar = document.querySelector(".action-bar");
+      const buttons = [...actionBar.querySelectorAll("button")];
+      const navHighlight = actionBar.querySelector(".nav-highlight");
+
+      let selectedButton = actionBar.querySelector(".selected") || buttons[0];
+      let isRunning = false;
+      const springFactor = 0.18;
+
+      const current = { x: 0, width: 0, opacity: 0 };
+      const target = { x: 0, width: 0, opacity: 1 };
+
+      const renderHighlight = () => {
+        navHighlight.style.transform = `translate3d(${current.x}px, -50%, 0)`;
+        navHighlight.style.width = `${current.width}px`;
+        navHighlight.style.opacity = `${current.opacity}`;
+      };
+
+      const step = () => {
+        current.x += (target.x - current.x) * springFactor;
+        current.width += (target.width - current.width) * springFactor;
+        current.opacity += (target.opacity - current.opacity) * springFactor;
+
+        renderHighlight();
+
+        const settled =
+          Math.abs(target.x - current.x) < 0.25 &&
+          Math.abs(target.width - current.width) < 0.25 &&
+          Math.abs(target.opacity - current.opacity) < 0.02;
+
+        if (!settled) {
+          requestAnimationFrame(step);
+          return;
+        }
+
+        current.x = target.x;
+        current.width = target.width;
+        current.opacity = target.opacity;
+        renderHighlight();
+        isRunning = false;
+      };
+
+      const animateToTarget = () => {
+        if (isRunning) return;
+        isRunning = true;
+        requestAnimationFrame(step);
+      };
+
+      const setHighlightTarget = (button, instant = false) => {
+        const barRect = actionBar.getBoundingClientRect();
+        const buttonRect = button.getBoundingClientRect();
+        const horizontalInset = 4;
+
+        target.x = buttonRect.left - barRect.left - horizontalInset;
+        target.width = buttonRect.width + horizontalInset * 2;
+        target.opacity = 1;
+
+        if (instant) {
+          current.x = target.x;
+          current.width = target.width;
+          current.opacity = target.opacity;
+          renderHighlight();
+          return;
+        }
+
+        animateToTarget();
+      };
+
+      const selectButton = (button) => {
+        if (selectedButton) {
+          selectedButton.classList.remove("selected");
+        }
+
+        selectedButton = button;
+        selectedButton.classList.add("selected");
+        setHighlightTarget(selectedButton);
+      };
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => selectButton(button));
+        button.addEventListener("mouseenter", () => setHighlightTarget(button));
+        button.addEventListener("focus", () => setHighlightTarget(button));
+      });
+
+      actionBar.addEventListener("mouseleave", () =>
+        setHighlightTarget(selectedButton),
+      );
+      actionBar.addEventListener("focusout", (event) => {
+        if (!actionBar.contains(event.relatedTarget)) {
+          setHighlightTarget(selectedButton);
+        }
+      });
+
+      window.addEventListener("resize", () =>
+        setHighlightTarget(selectedButton, true),
+      );
+
+      setHighlightTarget(selectedButton, true);
+    </script>
+  </body>
+</html>

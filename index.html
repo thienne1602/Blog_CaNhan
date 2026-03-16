@@ -7,18 +7,22 @@
       name="description"
       content="Portfolio của Thạch Văn Ngọc Thiên — Business Analyst Intern, sinh viên Hệ thống Thông tin tại HUTECH, định hướng phân tích nghiệp vụ, thiết kế giải pháp và triển khai dự án thực tế."
     />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#06060b" />
+    <meta name="color-scheme" content="dark light" />
     <meta name="author" content="Thạch Văn Ngọc Thiên" />
+    <meta property="og:locale" content="vi_VN" />
     <meta property="og:title" content="Portfolio — Thạch Văn Ngọc Thiên" />
     <meta
       property="og:description"
       content="Business Analyst Intern · HUTECH — Thu thập yêu cầu, phân tích nghiệp vụ, thiết kế giải pháp và phối hợp phát triển sản phẩm thực tế."
     />
-    <meta property="og:image" content="assets/images/cv3.png" />
+    <meta property="og:image" content="assets/images/cv-preview.png" />
     <meta property="og:type" content="website" />
     <title>Portfolio — Thạch Văn Ngọc Thiên</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/images/cv3.png" />
+    <link rel="icon" type="image/png" href="assets/images/cv-preview.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -38,6 +42,10 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <a href="#mainContent" class="skip-link"
+      >Bỏ qua điều hướng, tới nội dung chính</a
+    >
+
     <!-- ============================================
          VIDEO BACKGROUND
          ============================================ -->
@@ -63,10 +71,11 @@
     <!-- ============================================
          NAVIGATION
          ============================================ -->
-    <nav class="nav-bar" id="navbar">
+    <nav class="nav-bar" id="navbar" aria-label="Điều hướng chính">
       <div class="nav-logo">
-        <img src="assets/images/cv3.png" alt="Ngọc Thiên" />
+        <img src="assets/images/cv-preview.png" alt="Ngọc Thiên" />
       </div>
+      <div class="nav-highlight" aria-hidden="true"></div>
       <a href="#hero" class="nav-link active">Trang chủ</a>
       <a href="#about" class="nav-link">Giới thiệu</a>
       <a href="#skills" class="nav-link">Kỹ năng</a>
@@ -76,16 +85,76 @@
       <a href="#contact" class="nav-cta">
         <i class="fas fa-paper-plane"></i> Liên hệ
       </a>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <i class="fas fa-sun"></i>
-        <i class="fas fa-moon"></i>
+      <button
+        class="theme-toggle"
+        id="themeToggle"
+        aria-label="Chuyển sang light mode"
+        aria-pressed="false"
+      >
+        <span class="toggle__content">
+          <svg
+            aria-hidden="true"
+            class="toggle__backdrop"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 290 228"
+          >
+            <g class="clouds">
+              <path
+                fill="#D9D9D9"
+                d="M335 147.5c0 27.89-22.61 50.5-50.5 50.5a50.78 50.78 0 0 1-9.29-.853c-2.478 12.606-10.595 23.188-21.615 29.011C245.699 243.749 228.03 256 207.5 256a50.433 50.433 0 0 1-16.034-2.599A41.811 41.811 0 0 1 166 262a41.798 41.798 0 0 1-22.893-6.782A42.21 42.21 0 0 1 135 256a41.82 41.82 0 0 1-19.115-4.592A41.84 41.84 0 0 1 88 262c-1.827 0-3.626-.117-5.391-.343C74.911 270.448 63.604 276 51 276c-23.196 0-42-18.804-42-42s18.804-42 42-42c1.827 0 3.626.117 5.391.343C64.089 183.552 75.396 178 88 178a41.819 41.819 0 0 1 19.115 4.592C114.532 176.002 124.298 172 135 172a41.798 41.798 0 0 1 22.893 6.782 42.066 42.066 0 0 1 7.239-.773C174.137 164.159 189.749 155 207.5 155c.601 0 1.199.01 1.794.031A41.813 41.813 0 0 1 234 147h.002c.269-27.66 22.774-50 50.498-50 27.89 0 50.5 22.61 50.5 50.5Z"
+              />
+            </g>
+          </svg>
+
+          <span class="toggle__indicator-wrapper">
+            <span class="toggle__indicator">
+              <span class="toggle__star">
+                <span class="sun">
+                  <span class="moon">
+                    <span class="moon__crater"></span>
+                    <span class="moon__crater"></span>
+                    <span class="moon__crater"></span>
+                  </span>
+                </span>
+              </span>
+            </span>
+          </span>
+
+          <svg
+            aria-hidden="true"
+            class="toggle__backdrop"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 290 228"
+          >
+            <g class="stars">
+              <g>
+                <path
+                  fill="#fff"
+                  fill-rule="evenodd"
+                  d="M61 11.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.749 3.749 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.749 3.749 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813a3.749 3.749 0 0 0 2.576-2.576l.813-2.846A.75.75 0 0 1 61 11.5Z"
+                  clip-rule="evenodd"
+                />
+              </g>
+              <g>
+                <path
+                  fill="#fff"
+                  fill-rule="evenodd"
+                  d="M147 60.25a.377.377 0 0 1 .36.272l.407 1.423a1.883 1.883 0 0 0 1.288 1.288l1.423.407a.375.375 0 0 1 0 .72l-1.423.407a1.875 1.875 0 0 0-1.288 1.288l-.407 1.423a.371.371 0 0 1-.36.272.377.377 0 0 1-.36-.272l-.407-1.423a1.883 1.883 0 0 0-1.288-1.288l-1.423-.406a.375.375 0 0 1 0-.722l1.423-.406a1.875 1.875 0 0 0 1.288-1.288l.407-1.423a.372.372 0 0 1 .36-.272Z"
+                  clip-rule="evenodd"
+                />
+              </g>
+            </g>
+          </svg>
+        </span>
       </button>
     </nav>
 
     <!-- ============================================
          MAIN CONTENT
          ============================================ -->
-    <main class="main-container">
+    <main class="main-container" id="mainContent" tabindex="-1">
       <div class="bento-grid">
         <!-- ===== HERO ===== -->
         <section class="glass-card bento-hero reveal" id="hero">
@@ -130,7 +199,10 @@
           </div>
           <div class="hero-avatar-container">
             <div class="hero-avatar">
-              <img src="assets/images/cv3.png" alt="Thạch Văn Ngọc Thiên" />
+              <img
+                src="assets/images/cv-preview.png"
+                alt="Thạch Văn Ngọc Thiên"
+              />
               <div class="hero-avatar-ring"></div>
               <div class="hero-avatar-glow"></div>
             </div>
@@ -169,7 +241,7 @@
         <div class="glass-card bento-photo reveal reveal-delay-1">
           <div class="photo-container">
             <img
-              src="assets/images/cv3.png"
+              src="assets/images/cv-preview.png"
               alt="Thạch Văn Ngọc Thiên — Ảnh chân dung"
               loading="lazy"
             />
@@ -802,7 +874,9 @@
               <a
                 href="https://github.com/thienne1602/VieGo_Blog"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="project-link"
+                aria-label="Mở GitHub dự án VieGo"
               >
                 <i class="fas fa-arrow-up-right-from-square"></i>
               </a>
@@ -841,7 +915,9 @@
               <a
                 href="https://github.com/thienne1602/PETHUB"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="project-link"
+                aria-label="Mở GitHub dự án PetHub"
               >
                 <i class="fas fa-arrow-up-right-from-square"></i>
               </a>
@@ -880,7 +956,9 @@
               <a
                 href="https://github.com/thienne1602/SportLife"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="project-link"
+                aria-label="Mở GitHub dự án SportLife"
               >
                 <i class="fas fa-arrow-up-right-from-square"></i>
               </a>
@@ -915,7 +993,9 @@
               <a
                 href="https://github.com/thienne1602/Tasky"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="project-link"
+                aria-label="Mở GitHub dự án Tasky"
               >
                 <i class="fas fa-arrow-up-right-from-square"></i>
               </a>
@@ -953,7 +1033,9 @@
               <a
                 href="https://github.com/thienne1602/game_anh_hung_ban_phim_"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="project-link"
+                aria-label="Mở GitHub dự án Game Anh Hùng Bàn Phím"
               >
                 <i class="fas fa-arrow-up-right-from-square"></i>
               </a>
@@ -991,7 +1073,9 @@
               <a
                 href="https://github.com/thienne1602/Web_Do_An_CSDL"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="project-link"
+                aria-label="Mở GitHub dự án Quản lý Cửa hàng"
               >
                 <i class="fas fa-arrow-up-right-from-square"></i>
               </a>
@@ -1061,6 +1145,7 @@
                 <a
                   href="assets/docs/cv_tiếng việt.pdf"
                   target="_blank"
+                  rel="noopener noreferrer"
                   class="btn-secondary"
                 >
                   <i class="fas fa-eye"></i> Xem Tiếng Việt
@@ -1075,6 +1160,7 @@
                 <a
                   href="assets/docs/cv_tiếng anh.pdf"
                   target="_blank"
+                  rel="noopener noreferrer"
                   class="btn-secondary"
                 >
                   <i class="fas fa-eye"></i> Xem Tiếng Anh
@@ -1096,7 +1182,7 @@
           </blockquote>
           <div class="testimonial-author">
             <div class="testimonial-avatar">
-              <img src="assets/images/cv3.png" alt="Ngọc Thiên" />
+              <img src="assets/images/cv-preview.png" alt="Ngọc Thiên" />
             </div>
             <div class="testimonial-info">
               <h4>Thạch Văn Ngọc Thiên</h4>
@@ -1136,6 +1222,7 @@
               <a
                 href="https://github.com/thienne1602"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="contact-chip"
               >
                 <i class="fab fa-github"></i> GitHub
@@ -1143,6 +1230,7 @@
               <a
                 href="https://linkedin.com/in/thachvanngocthien"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="contact-chip"
               >
                 <i class="fab fa-linkedin"></i> LinkedIn
@@ -1163,8 +1251,15 @@
     </main>
 
     <!-- ===== PROJECT DETAIL MODAL ===== -->
-    <div class="project-modal-overlay" id="projectModal">
-      <div class="project-modal">
+    <div class="project-modal-overlay" id="projectModal" aria-hidden="true">
+      <div
+        class="project-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+        aria-describedby="modalDesc"
+        tabindex="-1"
+      >
         <button class="project-modal-close" id="projectModalClose">
           <i class="fas fa-xmark"></i>
         </button>
@@ -1204,7 +1299,13 @@
             </div>
             <div class="project-modal-tech" id="modalTech"></div>
             <div class="project-modal-actions">
-              <a href="#" target="_blank" class="btn-primary" id="modalGithub">
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-primary"
+                id="modalGithub"
+              >
                 <i class="fab fa-github"></i> Xem trên GitHub
               </a>
             </div>
@@ -1214,8 +1315,15 @@
     </div>
 
     <!-- ===== SKILL DETAIL MODAL ===== -->
-    <div class="skill-modal-overlay" id="skillModal">
-      <div class="skill-modal">
+    <div class="skill-modal-overlay" id="skillModal" aria-hidden="true">
+      <div
+        class="skill-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="skillModalTitle"
+        aria-describedby="skillModalDesc"
+        tabindex="-1"
+      >
         <button class="skill-modal-close" id="skillModalClose">
           <i class="fas fa-xmark"></i>
         </button>
@@ -1273,6 +1381,16 @@
         </div>
       </div>
     </div>
+
+    <button
+      class="back-to-top"
+      id="backToTop"
+      type="button"
+      aria-label="Quay về đầu trang"
+      title="Lên đầu trang"
+    >
+      <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- ============================================
          SCRIPTS

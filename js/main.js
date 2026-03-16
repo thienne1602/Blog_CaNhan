@@ -7,6 +7,10 @@
 (function () {
   "use strict";
 
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
   // ============================================
   // CURSOR GLOW FOLLOWER (disabled)
   // ============================================
@@ -59,28 +63,205 @@
 
   counters.forEach((c) => counterObserver.observe(c));
 
-  // ============================================
-  // NAV ACTIVE STATE ON SCROLL
-  // ============================================
-  const sections = document.querySelectorAll("section[id], div[id]");
   const navLinks = document.querySelectorAll(".nav-link");
+  const navSections = [...navLinks]
+    .map((link) => {
+      const href = link.getAttribute("href") || "";
+      if (!href.startsWith("#")) return null;
 
-  window.addEventListener("scroll", () => {
-    let current = "";
-    sections.forEach((section) => {
-      const sectionTop = section.offsetTop - 200;
-      if (scrollY >= sectionTop) {
-        current = section.getAttribute("id");
-      }
-    });
+      const id = href.slice(1);
+      const section = document.getElementById(id);
+      if (!section) return null;
+
+      return { id, link, section };
+    })
+    .filter(Boolean);
+  const bgOrbs = document.querySelectorAll(".bg-orb");
+  const navbar = document.getElementById("navbar");
+  const navHighlight = navbar?.querySelector(".nav-highlight") || null;
+  const backToTop = document.getElementById("backToTop");
+  const rootStyle = document.documentElement.style;
+  let activeNavLink =
+    navbar?.querySelector(".nav-link.active") || navLinks[0] || null;
+
+  const navHighlightCurrent = { x: 0, width: 0, opacity: 0 };
+  const navHighlightTarget = { x: 0, width: 0, opacity: 1 };
+  let navHighlightRunning = false;
+
+  function renderNavHighlight() {
+    if (!navHighlight) return;
+    navHighlight.style.transform = `translate3d(${navHighlightCurrent.x}px, -50%, 0)`;
+    navHighlight.style.width = `${navHighlightCurrent.width}px`;
+    navHighlight.style.opacity = `${navHighlightCurrent.opacity}`;
+  }
+
+  function runNavHighlightStep() {
+    navHighlightCurrent.x +=
+      (navHighlightTarget.x - navHighlightCurrent.x) * 0.18;
+    navHighlightCurrent.width +=
+      (navHighlightTarget.width - navHighlightCurrent.width) * 0.18;
+    navHighlightCurrent.opacity +=
+      (navHighlightTarget.opacity - navHighlightCurrent.opacity) * 0.18;
+
+    renderNavHighlight();
+
+    const settled =
+      Math.abs(navHighlightTarget.x - navHighlightCurrent.x) < 0.25 &&
+      Math.abs(navHighlightTarget.width - navHighlightCurrent.width) < 0.25 &&
+      Math.abs(navHighlightTarget.opacity - navHighlightCurrent.opacity) < 0.02;
+
+    if (!settled) {
+      requestAnimationFrame(runNavHighlightStep);
+      return;
+    }
+
+    navHighlightCurrent.x = navHighlightTarget.x;
+    navHighlightCurrent.width = navHighlightTarget.width;
+    navHighlightCurrent.opacity = navHighlightTarget.opacity;
+    renderNavHighlight();
+    navHighlightRunning = false;
+  }
+
+  function setNavHighlightTarget(link, instant = false) {
+    if (!navbar || !navHighlight || !link) return;
+
+    const navRect = navbar.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    const horizontalInset = 4;
+
+    navHighlightTarget.x = linkRect.left - navRect.left - horizontalInset;
+    navHighlightTarget.width = linkRect.width + horizontalInset * 2;
+    navHighlightTarget.opacity = 1;
+
+    if (instant || reducedMotion) {
+      navHighlightCurrent.x = navHighlightTarget.x;
+      navHighlightCurrent.width = navHighlightTarget.width;
+      navHighlightCurrent.opacity = navHighlightTarget.opacity;
+      renderNavHighlight();
+      return;
+    }
+
+    if (!navHighlightRunning) {
+      navHighlightRunning = true;
+      requestAnimationFrame(runNavHighlightStep);
+    }
+  }
+
+  function setActiveNavLink(nextLink, animate = true) {
+    if (!nextLink || !navLinks.length) return;
+    if (activeNavLink === nextLink) return;
 
     navLinks.forEach((link) => {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === "#" + current) {
-        link.classList.add("active");
+      link.classList.toggle("active", link === nextLink);
+    });
+
+    activeNavLink = nextLink;
+    setNavHighlightTarget(activeNavLink, !animate);
+  }
+
+  function updateThemeColor() {
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (!themeMeta) return;
+    const isLight = document.body.classList.contains("light-mode");
+    themeMeta.setAttribute("content", isLight ? "#f0f0f5" : "#06060b");
+  }
+
+  function updateScrollUI() {
+    const y = window.scrollY;
+
+    let matchedLink = navLinks[0] || null;
+    const offset = 220;
+
+    navSections.forEach(({ link, section }) => {
+      const sectionTop = section.getBoundingClientRect().top + y - offset;
+      if (y >= sectionTop) {
+        matchedLink = link;
       }
     });
-  });
+
+    setActiveNavLink(matchedLink, !reducedMotion);
+
+    if (!reducedMotion) {
+      bgOrbs.forEach((orb, i) => {
+        const speed = 0.03 + i * 0.01;
+        orb.style.transform = `translateY(${y * speed}px)`;
+      });
+    }
+
+    if (navbar) {
+      const isLight = document.body.classList.contains("light-mode");
+      if (y > 100) {
+        navbar.style.background = isLight
+          ? "rgba(255, 255, 255, 0.9)"
+          : "rgba(6, 6, 11, 0.9)";
+        navbar.style.borderColor = isLight
+          ? "rgba(0, 0, 0, 0.1)"
+          : "rgba(255,255,255,0.14)";
+      } else {
+        navbar.style.background = isLight
+          ? "rgba(255, 255, 255, 0.75)"
+          : "rgba(12, 12, 20, 0.8)";
+        navbar.style.borderColor = isLight
+          ? "rgba(0, 0, 0, 0.06)"
+          : "rgba(255,255,255,0.1)";
+      }
+    }
+
+    const scrollHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollHeight > 0 ? Math.min(y / scrollHeight, 1) : 0;
+
+    if (backToTop) {
+      backToTop.classList.toggle("visible", y > 500);
+      rootStyle.setProperty(
+        "--scroll-progress",
+        `${Math.round(progress * 360)}deg`,
+      );
+    }
+  }
+
+  let isScrollTicking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!isScrollTicking) {
+        requestAnimationFrame(() => {
+          updateScrollUI();
+          isScrollTicking = false;
+        });
+        isScrollTicking = true;
+      }
+    },
+    { passive: true },
+  );
+
+  window.addEventListener("resize", updateScrollUI);
+
+  if (navbar && navHighlight && navLinks.length) {
+    navLinks.forEach((link) => {
+      link.addEventListener("mouseenter", () => setNavHighlightTarget(link));
+      link.addEventListener("focus", () => setNavHighlightTarget(link));
+      link.addEventListener("click", () => {
+        setActiveNavLink(link, !reducedMotion);
+      });
+    });
+
+    navbar.addEventListener("mouseleave", () => {
+      setNavHighlightTarget(activeNavLink || navLinks[0]);
+    });
+
+    navbar.addEventListener("focusout", (event) => {
+      if (!navbar.contains(event.relatedTarget)) {
+        setNavHighlightTarget(activeNavLink || navLinks[0]);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      setNavHighlightTarget(activeNavLink || navLinks[0], true);
+    });
+
+    setNavHighlightTarget(activeNavLink || navLinks[0], true);
+  }
 
   // ============================================
   // TILT EFFECT ON GLASS CARDS (disabled)
@@ -94,19 +275,11 @@
       e.preventDefault();
       const target = document.querySelector(this.getAttribute("href"));
       if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        target.scrollIntoView({
+          behavior: reducedMotion ? "auto" : "smooth",
+          block: "start",
+        });
       }
-    });
-  });
-
-  // ============================================
-  // PARALLAX ON BACKGROUND ORBS
-  // ============================================
-  window.addEventListener("scroll", () => {
-    const scrollY = window.scrollY;
-    document.querySelectorAll(".bg-orb").forEach((orb, i) => {
-      const speed = 0.03 + i * 0.01;
-      orb.style.transform = `translateY(${scrollY * speed}px)`;
     });
   });
 
@@ -116,15 +289,31 @@
   const themeToggle = document.getElementById("themeToggle");
   const savedTheme = localStorage.getItem("theme");
 
+  function syncThemeToggleA11y() {
+    if (!themeToggle) return;
+    const isLight = document.body.classList.contains("light-mode");
+    themeToggle.setAttribute("aria-pressed", String(!isLight));
+    themeToggle.setAttribute(
+      "aria-label",
+      isLight ? "Chuyển sang dark mode" : "Chuyển sang light mode",
+    );
+    document.body.setAttribute("data-dark-mode", String(!isLight));
+  }
+
   if (savedTheme === "light") {
     document.body.classList.add("light-mode");
   }
+  syncThemeToggleA11y();
+  updateThemeColor();
 
   if (themeToggle) {
     themeToggle.addEventListener("click", () => {
       document.body.classList.toggle("light-mode");
       const isLight = document.body.classList.contains("light-mode");
       localStorage.setItem("theme", isLight ? "light" : "dark");
+      syncThemeToggleA11y();
+      updateThemeColor();
+      updateScrollUI();
     });
   }
 
@@ -157,53 +346,43 @@
     skillObserver.observe(bar);
   });
 
-  // ============================================
-  // NAVBAR BLUR ON SCROLL (theme-aware)
-  // ============================================
-  const navbar = document.getElementById("navbar");
-  window.addEventListener("scroll", () => {
-    if (!navbar) return;
-    const isLight = document.body.classList.contains("light-mode");
-    if (window.scrollY > 100) {
-      navbar.style.background = isLight
-        ? "rgba(255, 255, 255, 0.9)"
-        : "rgba(6, 6, 11, 0.9)";
-      navbar.style.borderColor = isLight
-        ? "rgba(0, 0, 0, 0.1)"
-        : "rgba(255,255,255,0.14)";
-    } else {
-      navbar.style.background = isLight
-        ? "rgba(255, 255, 255, 0.75)"
-        : "rgba(12, 12, 20, 0.8)";
-      navbar.style.borderColor = isLight
-        ? "rgba(0, 0, 0, 0.06)"
-        : "rgba(255,255,255,0.1)";
-    }
-  });
+  if (backToTop) {
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+    });
+  }
+
+  updateScrollUI();
 
   // ============================================
   // MAGNETIC BUTTON EFFECT
   // ============================================
-  document
-    .querySelectorAll(
-      ".btn-primary, .btn-secondary, .btn-download, .contact-chip, .nav-cta",
-    )
-    .forEach((btn) => {
-      btn.addEventListener("mousemove", (e) => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+  const hasPrecisePointer = window.matchMedia(
+    "(hover: hover) and (pointer: fine)",
+  ).matches;
+  if (!reducedMotion && hasPrecisePointer) {
+    document
+      .querySelectorAll(
+        ".btn-primary, .btn-secondary, .btn-download, .contact-chip, .nav-cta",
+      )
+      .forEach((btn) => {
+        btn.addEventListener("mousemove", (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+        });
+        btn.addEventListener("mouseleave", () => {
+          btn.style.transform = "";
+        });
       });
-      btn.addEventListener("mouseleave", () => {
-        btn.style.transform = "";
-      });
-    });
+  }
 
   // ============================================
   // LOADING ANIMATION
   // ============================================
   window.addEventListener("load", () => {
+    if (reducedMotion) return;
     document.body.style.opacity = "0";
     document.body.style.transition = "opacity 0.6s ease";
     requestAnimationFrame(() => {
@@ -312,12 +491,57 @@
   };
 
   const modal = document.getElementById("projectModal");
+  const modalDialog = modal ? modal.querySelector(".project-modal") : null;
   const modalClose = document.getElementById("projectModalClose");
   const projectVideo = document.getElementById("projectVideo");
+  let activeDialog = null;
+  let lastFocusedElement = null;
+
+  function trapFocus(event) {
+    if (event.key !== "Tab" || !activeDialog) return;
+
+    const focusables = activeDialog.querySelectorAll(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+    );
+
+    if (focusables.length === 0) return;
+
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  function openDialog(overlay, dialog) {
+    if (!overlay || !dialog) return;
+    lastFocusedElement = document.activeElement;
+    overlay.setAttribute("aria-hidden", "false");
+    overlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+    activeDialog = dialog;
+    dialog.focus();
+  }
+
+  function closeDialog(overlay) {
+    if (!overlay) return;
+    overlay.setAttribute("aria-hidden", "true");
+    overlay.classList.remove("active");
+    document.body.style.overflow = "";
+    activeDialog = null;
+    if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+      lastFocusedElement.focus();
+    }
+  }
 
   function openProjectModal(projectId) {
     const data = projectData[projectId];
-    if (!data) return;
+    if (!data || !modal || !modalDialog) return;
 
     document.getElementById("modalTitle").textContent = data.title;
     document.getElementById("modalBadge").textContent = data.badge;
@@ -337,26 +561,31 @@
     githubBtn.href = data.github;
 
     // Video
-    const videoSource = projectVideo.querySelector("source");
-    if (data.video) {
-      videoSource.src = data.video;
-      projectVideo.load();
-      projectVideo.parentElement.style.display = "block";
-    } else {
-      videoSource.src = "";
-      projectVideo.parentElement.style.display = "none";
+    const videoSource = projectVideo
+      ? projectVideo.querySelector("source")
+      : null;
+    if (projectVideo && videoSource) {
+      if (data.video) {
+        videoSource.src = data.video;
+        projectVideo.load();
+        projectVideo.parentElement.style.display = "block";
+      } else {
+        videoSource.src = "";
+        projectVideo.parentElement.style.display = "none";
+      }
     }
 
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
+    openDialog(modal, modalDialog);
   }
 
   function closeProjectModal() {
-    modal.classList.remove("active");
-    document.body.style.overflow = "";
+    if (!modal) return;
+    closeDialog(modal);
     // Pause video when closing
-    projectVideo.pause();
-    projectVideo.currentTime = 0;
+    if (projectVideo) {
+      projectVideo.pause();
+      projectVideo.currentTime = 0;
+    }
   }
 
   // Click on project cards to open modal
@@ -380,7 +609,10 @@
 
   // Close on Escape key
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("active")) {
+    trapFocus(e);
+
+    if (e.key === "Escape" && modal && modal.classList.contains("active")) {
+      e.preventDefault();
       closeProjectModal();
     }
     if (
@@ -388,6 +620,7 @@
       skillModal &&
       skillModal.classList.contains("active")
     ) {
+      e.preventDefault();
       closeSkillModal();
     }
   });
@@ -631,6 +864,9 @@
   };
 
   const skillModal = document.getElementById("skillModal");
+  const skillModalDialog = skillModal
+    ? skillModal.querySelector(".skill-modal")
+    : null;
   const skillModalClose = document.getElementById("skillModalClose");
 
   function openSkillModal(skillId) {
@@ -735,13 +971,13 @@
       projContainer.parentElement.style.display = "none";
     }
 
-    skillModal.classList.add("active");
-    document.body.style.overflow = "hidden";
+    if (!skillModal || !skillModalDialog) return;
+    openDialog(skillModal, skillModalDialog);
   }
 
   function closeSkillModal() {
-    skillModal.classList.remove("active");
-    document.body.style.overflow = "";
+    if (!skillModal) return;
+    closeDialog(skillModal);
   }
 
   // Click on skill cards to open modal
