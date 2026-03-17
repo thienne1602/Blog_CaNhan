@@ -3310,6 +3310,167 @@ body.light-mode .skill-card[data-skill]:hover .skill-click-hint {
 }
 
 /* ============================================
+   STORY LAYOUT MODE (Vertical Narrative)
+   ============================================ */
+body.story-layout .main-container {
+  max-width: 1240px;
+}
+
+body.story-layout .bento-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding-top: 112px;
+  position: relative;
+}
+
+body.story-layout .bento-grid::before {
+  content: "";
+  position: absolute;
+  top: 124px;
+  bottom: 60px;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.18) 14%,
+    rgba(255, 255, 255, 0.18) 86%,
+    transparent
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+body.story-layout .bento-grid > .glass-card {
+  grid-column: auto;
+  width: min(860px, 100%);
+  position: relative;
+  z-index: 2;
+}
+
+body.story-layout
+  .bento-grid
+  > .glass-card:not(
+    .bento-hero,
+    .bento-skills,
+    .bento-timeline,
+    .bento-contact,
+    .bento-cv,
+    .bento-certs,
+    .bento-projects,
+    .bento-testimonial
+  ) {
+  width: min(760px, 100%);
+}
+
+body.story-layout
+  .bento-grid
+  > .glass-card:not(
+    .bento-hero,
+    .bento-skills,
+    .bento-timeline,
+    .bento-contact,
+    .bento-cv,
+    .bento-certs,
+    .bento-projects,
+    .bento-testimonial
+  ):nth-child(odd) {
+  margin-right: auto;
+}
+
+body.story-layout
+  .bento-grid
+  > .glass-card:not(
+    .bento-hero,
+    .bento-skills,
+    .bento-timeline,
+    .bento-contact,
+    .bento-cv,
+    .bento-certs,
+    .bento-projects,
+    .bento-testimonial
+  ):nth-child(even) {
+  margin-left: auto;
+}
+
+body.story-layout
+  .bento-grid
+  > :is(
+    .bento-hero,
+    .bento-skills,
+    .bento-timeline,
+    .bento-contact,
+    .bento-cv,
+    .bento-certs,
+    .bento-projects,
+    .bento-testimonial
+  ) {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+body.story-layout .bento-hero {
+  min-height: 72vh;
+}
+
+body.story-layout .glass-card:hover {
+  transform: translateY(-6px) scale(1.004);
+}
+
+body.story-layout .section-title,
+body.story-layout .section-subtitle {
+  text-align: center;
+}
+
+body.story-layout .timeline {
+  max-width: 1020px;
+}
+
+@media (max-width: 1024px) {
+  body.story-layout .bento-grid::before {
+    left: 12px;
+    transform: none;
+    opacity: 0.42;
+  }
+
+  body.story-layout
+    .bento-grid
+    > .glass-card:not(
+      .bento-hero,
+      .bento-skills,
+      .bento-timeline,
+      .bento-contact,
+      .bento-cv,
+      .bento-certs,
+      .bento-projects,
+      .bento-testimonial
+    ) {
+    width: calc(100% - 20px);
+    margin-left: 20px;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  body.story-layout .bento-grid {
+    gap: 16px;
+    padding-top: 92px;
+  }
+
+  body.story-layout .bento-grid::before {
+    top: 96px;
+    bottom: 36px;
+  }
+
+  body.story-layout .bento-hero {
+    min-height: auto;
+  }
+}
+
+/* ============================================
    COUNTER ANIMATION
    ============================================ */
 .count-up {

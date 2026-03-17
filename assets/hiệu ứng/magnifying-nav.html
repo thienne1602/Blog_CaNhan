@@ -1,205 +1,495 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Credits to the owner "Una Kravets" -->
-    <title>Magnifying Nav</title>
+    <title>Trang ngang + head dọc</title>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
     />
     <style>
       :root {
+        --bg-1: #090b16;
+        --bg-2: #161a32;
+        --text-1: #f6f8ff;
+        --text-2: rgba(246, 248, 255, 0.72);
+        --glass: rgba(255, 255, 255, 0.09);
+        --glass-border: rgba(255, 255, 255, 0.2);
+        --accent-1: #8b7bff;
+        --accent-2: #37e5d6;
         --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
         --ease-pop: cubic-bezier(0.22, 1, 0.36, 1);
       }
 
-      body {
-        background-color: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        font-family: sans-serif;
+      * {
+        box-sizing: border-box;
       }
 
-      .action-bar {
+      body {
+        margin: 0;
+        min-height: 100vh;
+        overflow: hidden;
+        font-family: "Be Vietnam Pro", sans-serif;
+        color: var(--text-1);
+        background:
+          radial-gradient(
+            circle at 8% 4%,
+            rgba(139, 123, 255, 0.3),
+            transparent 35%
+          ),
+          radial-gradient(
+            circle at 94% 68%,
+            rgba(55, 229, 214, 0.22),
+            transparent 40%
+          ),
+          linear-gradient(145deg, var(--bg-1), var(--bg-2));
+      }
+
+      .bg-noise {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.05;
+        background-image: radial-gradient(
+          rgba(255, 255, 255, 0.8) 0.5px,
+          transparent 0.5px
+        );
+        background-size: 4px 4px;
+      }
+
+      .layout {
         position: relative;
-        display: flex;
-        align-items: center;
-        background-color: #fcfcfc;
-        border: 1px solid lightgray;
-        border-radius: 1rem;
-        padding: 0.5rem;
-        gap: 0.25rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+        height: 100vh;
+        display: grid;
+        grid-template-columns: 118px 1fr;
+      }
+
+      .side-head {
+        border-right: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(8, 11, 24, 0.62);
+        backdrop-filter: blur(12px);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        padding: 1rem 0.7rem;
+        gap: 1rem;
+      }
+
+      .brand-vertical {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        justify-self: center;
+        letter-spacing: 0.18rem;
+        font-weight: 700;
+        font-size: 0.84rem;
+        color: rgba(246, 248, 255, 0.86);
+      }
+
+      .nav-vertical {
+        justify-self: center;
+        align-self: center;
+        position: relative;
+        display: grid;
+        gap: 0.42rem;
+        padding: 0.4rem;
+        border: 1px solid var(--glass-border);
+        border-radius: 999px;
+        background: rgba(18, 22, 40, 0.75);
         isolation: isolate;
       }
 
       .nav-highlight {
         position: absolute;
-        top: 50%;
-        left: 0;
-        width: 3rem;
-        height: calc(100% - 0.45rem);
+        left: 50%;
+        top: 0;
+        width: calc(100% - 0.44rem);
+        height: 2.8rem;
         border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.9);
-        background: radial-gradient(
-          circle at 30% 30%,
-          rgba(255, 255, 255, 0.9),
-          rgba(255, 255, 255, 0.45) 48%,
-          rgba(230, 230, 230, 0.25)
+        transform: translate3d(-50%, 0, 0);
+        background: linear-gradient(
+          180deg,
+          rgba(139, 123, 255, 0.8),
+          rgba(55, 229, 214, 0.7)
         );
         box-shadow:
-          0 6px 16px rgba(0, 0, 0, 0.14),
-          inset 0 1px 0 rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(2px);
+          0 8px 16px rgba(36, 30, 78, 0.45),
+          inset 0 1px 0 rgba(255, 255, 255, 0.4);
         pointer-events: none;
-        transform: translate3d(0, -50%, 0);
-        will-change: transform, width, opacity;
         z-index: 0;
       }
 
-      .nav-highlight::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.5),
-          rgba(255, 255, 255, 0)
-        );
-      }
-
-      button {
+      .nav-btn {
         position: relative;
         z-index: 1;
-        padding: 10px 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
+        width: 2.8rem;
+        height: 2.8rem;
+        border: 0;
+        border-radius: 999px;
+        color: rgba(246, 248, 255, 0.85);
         background: none;
-        border-radius: 50px;
         cursor: pointer;
+        display: grid;
+        place-items: center;
         transition:
-          background-color 0.22s var(--ease-out-soft),
-          color 0.22s var(--ease-out-soft),
-          transform 0.22s var(--ease-pop);
+          color 0.25s var(--ease-out-soft),
+          transform 0.25s var(--ease-pop);
       }
 
-      .material-symbols-outlined {
-        background: none;
-        font-size: 24px;
-        font-variation-settings:
-          "FILL" 0,
-          "wght" 300,
-          "GRAD" 0,
-          "opsz" 24;
-        transition:
-          filter 0.22s var(--ease-out-soft),
-          transform 0.22s var(--ease-pop);
-      }
-
-      button:hover,
-      button:focus {
-        background-color: rgba(255, 255, 255, 0.35);
-        transform: translateY(-1px);
-      }
-
-      button:focus {
-        outline: none;
-      }
-
-      .selected {
-        background-color: transparent;
-        color: red;
-      }
-
-      .selected:hover,
-      .selected:focus {
-        background-color: transparent;
-      }
-
-      .selected .material-symbols-outlined {
-        filter: drop-shadow(0 0 4px tomato);
-        font-variation-settings:
-          "FILL" 1,
-          "wght" 300,
-          "GRAD" 0,
-          "opsz" 24;
+      .nav-btn:hover,
+      .nav-btn:focus-visible {
         transform: scale(1.05);
       }
 
-      /* increase clickable area */
-      button::before {
-        content: "";
-        position: absolute;
-        inset: -0.4rem;
+      .nav-btn.selected {
+        color: #fff;
+      }
+
+      .material-symbols-outlined {
+        font-size: 22px;
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 350,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+
+      .nav-btn.selected .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 1,
+          "wght" 450,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+
+      .head-note {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        justify-self: center;
+        color: var(--text-2);
+        font-size: 0.72rem;
+        letter-spacing: 0.11rem;
+      }
+
+      .slider-shell {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        min-width: 0;
+        padding: 1.2rem 1.4rem 1.2rem 1.1rem;
+      }
+
+      .slider {
+        min-width: 0;
+        border-radius: 1.4rem;
+        border: 1px solid var(--glass-border);
+        background: rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(7px);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .track {
+        height: 100%;
+        display: flex;
+        transition: transform 0.8s var(--ease-out-soft);
+        will-change: transform;
+      }
+
+      .slide {
+        flex: 0 0 100%;
+        min-width: 0;
+        padding: clamp(1.2rem, 2.8vw, 2.4rem);
+        display: grid;
+        align-content: center;
+      }
+
+      .slide-inner {
+        max-width: 760px;
+        display: grid;
+        gap: 0.95rem;
+        padding: 1.3rem;
+        border-radius: 1.1rem;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: var(--glass);
+        box-shadow: 0 18px 32px rgba(0, 0, 0, 0.28);
+      }
+
+      .slide-kicker {
+        width: fit-content;
+        font-size: 0.78rem;
+        letter-spacing: 0.08rem;
+        text-transform: uppercase;
+        color: rgba(246, 248, 255, 0.86);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 999px;
+        padding: 0.34rem 0.62rem;
+      }
+
+      .slide h2 {
+        margin: 0;
+        font-size: clamp(1.6rem, 3vw, 3rem);
+        line-height: 1.15;
+      }
+
+      .slide p {
+        margin: 0;
+        color: var(--text-2);
+        line-height: 1.8;
+        max-width: 60ch;
+      }
+
+      .control-bar {
+        margin-top: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .progress {
+        flex: 1;
+        height: 6px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .progress > span {
+        display: block;
+        height: 100%;
+        width: 0%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+        transition: width 120ms linear;
+      }
+
+      .controls {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .controls button {
+        border: 1px solid var(--glass-border);
+        background: rgba(12, 16, 31, 0.74);
+        color: var(--text-1);
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+
+      .controls button:hover {
+        transform: translateY(-1px);
+      }
+
+      @media (max-width: 860px) {
+        body {
+          overflow: auto;
+        }
+
+        .layout {
+          min-height: 100vh;
+          height: auto;
+          grid-template-columns: 1fr;
+          grid-template-rows: auto 1fr;
+        }
+
+        .side-head {
+          grid-template-rows: auto;
+          grid-template-columns: auto 1fr auto;
+          border-right: 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+          padding: 0.7rem;
+          align-items: center;
+        }
+
+        .brand-vertical,
+        .head-note {
+          writing-mode: horizontal-tb;
+          transform: none;
+        }
+
+        .nav-vertical {
+          grid-auto-flow: column;
+          justify-self: center;
+          width: fit-content;
+        }
+
+        .nav-highlight {
+          top: 50%;
+          left: 0;
+          width: 2.8rem;
+          height: calc(100% - 0.44rem);
+          transform: translate3d(0, -50%, 0);
+        }
+
+        .slider-shell {
+          padding: 1rem;
+        }
+
+        .slide {
+          min-height: 68vh;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
         * {
-          animation: none !important;
           transition-duration: 0.01ms !important;
+          animation: none !important;
         }
       }
     </style>
   </head>
   <body>
-    <div class="action-bar">
-      <div class="nav-highlight" aria-hidden="true"></div>
-      <button>
-        <span class="material-symbols-outlined">person</span>
-      </button>
-      <button>
-        <span class="material-symbols-outlined">push_pin</span>
-      </button>
-      <button class="selected">
-        <span class="material-symbols-outlined">alternate_email</span>
-      </button>
-      <button>
-        <span class="material-symbols-outlined">mail</span>
-      </button>
-      <button>
-        <span class="material-symbols-outlined">edit</span>
-      </button>
-      <button>
-        <span class="material-symbols-outlined">cases</span>
-      </button>
+    <div class="bg-noise" aria-hidden="true"></div>
+
+    <div class="layout">
+      <aside class="side-head" aria-label="Head dọc">
+        <div class="brand-vertical">THIÊN PORTFOLIO</div>
+
+        <nav class="nav-vertical" aria-label="Điều hướng slide">
+          <div class="nav-highlight" aria-hidden="true"></div>
+          <button
+            class="nav-btn selected"
+            data-index="0"
+            aria-label="Slide mở đầu"
+          >
+            <span class="material-symbols-outlined">home</span>
+          </button>
+          <button class="nav-btn" data-index="1" aria-label="Slide dự án">
+            <span class="material-symbols-outlined">deployed_code</span>
+          </button>
+          <button class="nav-btn" data-index="2" aria-label="Slide ý tưởng">
+            <span class="material-symbols-outlined">lightbulb</span>
+          </button>
+          <button class="nav-btn" data-index="3" aria-label="Slide liên hệ">
+            <span class="material-symbols-outlined">mail</span>
+          </button>
+        </nav>
+
+        <div class="head-note">AUTO SLIDE · 6S</div>
+      </aside>
+
+      <section class="slider-shell">
+        <div class="slider" id="slider">
+          <div class="track" id="track">
+            <article class="slide">
+              <div class="slide-inner">
+                <span class="slide-kicker">MỞ ĐẦU</span>
+                <h2>Trang ngang để người xem không phải cuộn quá dài.</h2>
+                <p>
+                  Bố cục này cho cảm giác như trình chiếu: mỗi khung là một ý
+                  chính, nhìn nhanh, gọn, và dễ tạo ấn tượng trong 10 giây đầu.
+                </p>
+              </div>
+            </article>
+
+            <article class="slide">
+              <div class="slide-inner">
+                <span class="slide-kicker">DỰ ÁN</span>
+                <h2>Mỗi lần lướt ngang là một case nổi bật.</h2>
+                <p>
+                  Bạn chỉ cần đặt 1 ảnh, 1 vấn đề, 1 kết quả cho mỗi slide. Cách
+                  này giúp portfolio có nhịp rõ và đỡ bị dài dòng khi đọc.
+                </p>
+              </div>
+            </article>
+
+            <article class="slide">
+              <div class="slide-inner">
+                <span class="slide-kicker">Ý TƯỞNG</span>
+                <h2>Head dọc bên trái tạo điểm khác biệt ngay lập tức.</h2>
+                <p>
+                  Điều hướng theo icon + thanh highlight chuyển động giúp trang
+                  trông hiện đại hơn mà vẫn đơn giản, không rối mắt.
+                </p>
+              </div>
+            </article>
+
+            <article class="slide">
+              <div class="slide-inner">
+                <span class="slide-kicker">LIÊN HỆ</span>
+                <h2>
+                  Trang tự lướt theo thời gian, bạn vẫn có thể bấm chuyển tay.
+                </h2>
+                <p>
+                  Tự động chạy mỗi 6 giây, có nút prev/next, và tạm dừng khi rê
+                  chuột để người xem đọc kỹ phần họ quan tâm.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="control-bar">
+          <div class="progress" aria-hidden="true">
+            <span id="progressFill"></span>
+          </div>
+          <div class="controls">
+            <button id="prevBtn" aria-label="Slide trước">
+              <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <button id="nextBtn" aria-label="Slide sau">
+              <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
 
     <script>
-      const actionBar = document.querySelector(".action-bar");
-      const buttons = [...actionBar.querySelectorAll("button")];
-      const navHighlight = actionBar.querySelector(".nav-highlight");
+      const nav = document.querySelector(".nav-vertical");
+      const buttons = [...nav.querySelectorAll(".nav-btn")];
+      const navHighlight = nav.querySelector(".nav-highlight");
+      const track = document.getElementById("track");
+      const slider = document.getElementById("slider");
+      const progressFill = document.getElementById("progressFill");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
 
-      let selectedButton = actionBar.querySelector(".selected") || buttons[0];
+      const reducedMotion = globalThis.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const autoDuration = 6000;
+      const spring = 0.18;
+      let index = 0;
+      let timerId = null;
+      let paused = false;
+      let lastTick = performance.now();
+      let elapsed = 0;
       let isRunning = false;
-      const springFactor = 0.18;
 
-      const current = { x: 0, width: 0, opacity: 0 };
-      const target = { x: 0, width: 0, opacity: 1 };
+      const current = { pos: 0, size: 0, opacity: 0 };
+      const target = { pos: 0, size: 0, opacity: 1 };
+
+      const isMobileHead = () =>
+        globalThis.matchMedia("(max-width: 860px)").matches;
 
       const renderHighlight = () => {
-        navHighlight.style.transform = `translate3d(${current.x}px, -50%, 0)`;
-        navHighlight.style.width = `${current.width}px`;
+        if (isMobileHead()) {
+          navHighlight.style.transform = `translate3d(${current.pos}px, -50%, 0)`;
+          navHighlight.style.width = `${current.size}px`;
+          navHighlight.style.height = `calc(100% - 0.44rem)`;
+        } else {
+          navHighlight.style.transform = `translate3d(-50%, ${current.pos}px, 0)`;
+          navHighlight.style.height = `${current.size}px`;
+          navHighlight.style.width = `calc(100% - 0.44rem)`;
+        }
         navHighlight.style.opacity = `${current.opacity}`;
       };
 
       const step = () => {
-        current.x += (target.x - current.x) * springFactor;
-        current.width += (target.width - current.width) * springFactor;
-        current.opacity += (target.opacity - current.opacity) * springFactor;
-
+        current.pos += (target.pos - current.pos) * spring;
+        current.size += (target.size - current.size) * spring;
+        current.opacity += (target.opacity - current.opacity) * spring;
         renderHighlight();
 
         const settled =
-          Math.abs(target.x - current.x) < 0.25 &&
-          Math.abs(target.width - current.width) < 0.25 &&
+          Math.abs(target.pos - current.pos) < 0.2 &&
+          Math.abs(target.size - current.size) < 0.2 &&
           Math.abs(target.opacity - current.opacity) < 0.02;
 
         if (!settled) {
@@ -207,69 +497,110 @@
           return;
         }
 
-        current.x = target.x;
-        current.width = target.width;
+        current.pos = target.pos;
+        current.size = target.size;
         current.opacity = target.opacity;
         renderHighlight();
         isRunning = false;
       };
 
-      const animateToTarget = () => {
-        if (isRunning) return;
-        isRunning = true;
-        requestAnimationFrame(step);
-      };
-
       const setHighlightTarget = (button, instant = false) => {
-        const barRect = actionBar.getBoundingClientRect();
-        const buttonRect = button.getBoundingClientRect();
-        const horizontalInset = 4;
+        const navRect = nav.getBoundingClientRect();
+        const btnRect = button.getBoundingClientRect();
+        const inset = 4;
 
-        target.x = buttonRect.left - barRect.left - horizontalInset;
-        target.width = buttonRect.width + horizontalInset * 2;
+        if (isMobileHead()) {
+          target.pos = btnRect.left - navRect.left - inset;
+          target.size = btnRect.width + inset * 2;
+        } else {
+          target.pos = btnRect.top - navRect.top - inset;
+          target.size = btnRect.height + inset * 2;
+        }
         target.opacity = 1;
 
-        if (instant) {
-          current.x = target.x;
-          current.width = target.width;
+        if (instant || reducedMotion) {
+          current.pos = target.pos;
+          current.size = target.size;
           current.opacity = target.opacity;
           renderHighlight();
           return;
         }
 
-        animateToTarget();
+        if (!isRunning) {
+          isRunning = true;
+          requestAnimationFrame(step);
+        }
       };
 
-      const selectButton = (button) => {
-        if (selectedButton) {
-          selectedButton.classList.remove("selected");
+      const applySlide = (nextIndex, fromUser = false) => {
+        index = (nextIndex + buttons.length) % buttons.length;
+        track.style.transform = `translateX(-${index * 100}%)`;
+
+        buttons.forEach((button, btnIndex) => {
+          const active = btnIndex === index;
+          button.classList.toggle("selected", active);
+          if (active) setHighlightTarget(button);
+        });
+
+        if (fromUser) {
+          elapsed = 0;
+          progressFill.style.width = "0%";
+        }
+      };
+
+      const tick = (now) => {
+        const delta = now - lastTick;
+        lastTick = now;
+
+        if (!paused && !reducedMotion) {
+          elapsed += delta;
+          const ratio = Math.min(elapsed / autoDuration, 1);
+          progressFill.style.width = `${ratio * 100}%`;
+
+          if (elapsed >= autoDuration) {
+            elapsed = 0;
+            applySlide(index + 1);
+          }
         }
 
-        selectedButton = button;
-        selectedButton.classList.add("selected");
-        setHighlightTarget(selectedButton);
+        timerId = requestAnimationFrame(tick);
       };
 
-      buttons.forEach((button) => {
-        button.addEventListener("click", () => selectButton(button));
+      buttons.forEach((button, btnIndex) => {
+        button.addEventListener("click", () => applySlide(btnIndex, true));
         button.addEventListener("mouseenter", () => setHighlightTarget(button));
         button.addEventListener("focus", () => setHighlightTarget(button));
       });
 
-      actionBar.addEventListener("mouseleave", () =>
-        setHighlightTarget(selectedButton),
-      );
-      actionBar.addEventListener("focusout", (event) => {
-        if (!actionBar.contains(event.relatedTarget)) {
-          setHighlightTarget(selectedButton);
-        }
+      nav.addEventListener("mouseleave", () => {
+        const activeButton = buttons[index];
+        if (activeButton) setHighlightTarget(activeButton);
       });
 
-      window.addEventListener("resize", () =>
-        setHighlightTarget(selectedButton, true),
-      );
+      prevBtn.addEventListener("click", () => applySlide(index - 1, true));
+      nextBtn.addEventListener("click", () => applySlide(index + 1, true));
 
-      setHighlightTarget(selectedButton, true);
+      [slider, nav].forEach((element) => {
+        element.addEventListener("mouseenter", () => (paused = true));
+        element.addEventListener("mouseleave", () => (paused = false));
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        paused = document.hidden;
+      });
+
+      globalThis.addEventListener("resize", () => {
+        const activeButton = buttons[index];
+        if (activeButton) setHighlightTarget(activeButton, true);
+      });
+
+      applySlide(0);
+      setHighlightTarget(buttons[0], true);
+      timerId = requestAnimationFrame(tick);
+
+      globalThis.addEventListener("beforeunload", () => {
+        if (timerId) cancelAnimationFrame(timerId);
+      });
     </script>
   </body>
 </html>
