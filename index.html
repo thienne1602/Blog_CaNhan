@@ -51,6 +51,103 @@
     >
     <div class="noise" aria-hidden="true"></div>
 
+    <audio
+      id="bgMusic"
+      src="assets/audio/8. Tìm Lại Hạnh Phúc Từ Tuổi Thơ.mp3"
+      autoplay
+      loop
+      preload="auto"
+    ></audio>
+
+    <audio
+      id="clickSound"
+      src="assets/audio/rawambience-user-interface-click-234656.mp3"
+      preload="auto"
+    ></audio>
+
+    <button
+      id="musicToggle"
+      class="music-toggle"
+      aria-label="Tắt/Mở nhạc"
+      title="Tắt/Mở nhạc"
+    >
+      <span class="material-symbols-outlined" id="musicIcon">music_note</span>
+    </button>
+
+    <style>
+      .music-toggle {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        color: #fff;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .music-toggle:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+      }
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const audio = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+        const toggleBtn = document.getElementById("musicToggle");
+        const musicIcon = document.getElementById("musicIcon");
+        let isPlaying = false;
+
+        // Phát âm thanh báo khi click bất kỳ đâu trên trang
+        document.addEventListener("click", () => {
+          clickSound.currentTime = 0; // Đặt lại thời gian để có thể phát liên tục nếu click nhanh
+          clickSound
+            .play()
+            .catch((err) => console.warn("Click sound blocked:", err));
+        });
+
+        const playMusic = () => {
+          if (isPlaying) return;
+          audio
+            .play()
+            .then(() => {
+              isPlaying = true;
+              musicIcon.textContent = "music_note";
+            })
+            .catch((err) =>
+              console.warn("Audio play blocked by browser:", err),
+            );
+          document.removeEventListener("click", playMusic);
+          document.removeEventListener("keydown", playMusic);
+        };
+
+        document.addEventListener("click", playMusic);
+        document.addEventListener("keydown", playMusic);
+
+        toggleBtn.addEventListener("click", (e) => {
+          e.stopPropagation(); // Avoid triggering the document click
+          if (audio.paused) {
+            audio.play();
+            isPlaying = true;
+            musicIcon.textContent = "music_note";
+          } else {
+            audio.pause();
+            isPlaying = false;
+            musicIcon.textContent = "music_off";
+          }
+        });
+      });
+    </script>
+
     <div id="mainLayoutHost"></div>
 
     <script src="js/load-layout.js" defer></script>

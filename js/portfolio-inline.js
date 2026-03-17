@@ -553,6 +553,16 @@ const setSlide = (nextIndex, fromUser = false) => {
     button.classList.toggle("selected", active);
     if (active) setHighlightTarget(button);
   });
+
+  if (prevBtn && nextBtn) {
+    if (index === slideCount - 1) {
+      prevBtn.style.display = "grid";
+      nextBtn.style.display = "none";
+    } else {
+      prevBtn.style.display = "none";
+      nextBtn.style.display = "grid";
+    }
+  }
 };
 
 const buildRadarPolygonPoints = (levels, radius, centerX, centerY, scale = 1) =>
@@ -771,7 +781,14 @@ if (nav) {
 }
 
 if (prevBtn) {
-  prevBtn.addEventListener("click", () => setSlide(index - 1, true));
+  prevBtn.addEventListener("click", () => {
+    if (index === slideCount - 1) {
+      // Bấm prev khi ở trang cuối => Quay về trang đầu
+      setSlide(0, true);
+    } else {
+      setSlide(index - 1, true);
+    }
+  });
 }
 if (nextBtn) {
   nextBtn.addEventListener("click", () => setSlide(index + 1, true));
