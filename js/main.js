@@ -475,7 +475,8 @@
       achieve: "Hệ thống game hoàn chỉnh · Title effects & Sound management",
       tech: ["Godot Engine", "GDScript", "C#", "Game Design"],
       github: "https://github.com/thienne1602/game_anh_hung_ban_phim_",
-      video: "",
+        youtube: "https://youtu.be/0aRG4Gsuk54",
+        video: "",
     },
     "quanly-cuahang": {
       title: "Hệ thống Quản lý Cửa hàng",
@@ -558,7 +559,29 @@
 
     // GitHub link
     const githubBtn = document.getElementById("modalGithub");
-    githubBtn.href = data.github;
+          githubBtn.href = data.github;
+
+      // Youtube Demo Link dynamically added to modal if exists
+      let youtubeBtn = document.getElementById("modalYoutube");
+      if (!youtubeBtn) {
+        youtubeBtn = document.createElement("a");
+        youtubeBtn.id = "modalYoutube";
+        youtubeBtn.className = "btn";
+        youtubeBtn.target = "_blank";
+        youtubeBtn.rel = "noopener noreferrer";
+        youtubeBtn.style.background = "linear-gradient(135deg, #ff0000, #ff4b2b)";
+        youtubeBtn.style.color = "#fff";
+        youtubeBtn.style.border = "none";
+        youtubeBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 1.2em; vertical-align: middle; margin-right: 4px;">play_circle</span> Video Demo';
+        githubBtn.parentNode.appendChild(youtubeBtn);
+      }
+      
+      if (data.youtube) {
+        youtubeBtn.href = data.youtube;
+        youtubeBtn.style.display = "inline-flex";
+      } else {
+        youtubeBtn.style.display = "none";
+      }
 
     // Video
     const videoSource = projectVideo
@@ -1009,3 +1032,5 @@
     "color: #6c5ce7; font-size: 14px; font-weight: bold;",
   );
 })();
+
+

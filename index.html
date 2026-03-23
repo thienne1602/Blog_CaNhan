@@ -148,6 +148,191 @@
       });
     </script>
 
+    <style>
+      /* Swappable project & detail panels */
+      .project-feature-area {
+        position: relative;
+      }
+
+      .project-feature[data-project] {
+        animation: featureFadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      @keyframes featureFadeIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Swappable item in list */
+      .project-item--swappable {
+        cursor: pointer;
+        border-left: 3px solid transparent;
+        background-image: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(247,147,30,0.05));
+        transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .project-item--swappable:hover {
+        border-left-color: #ff6b35;
+        background-image: linear-gradient(135deg, rgba(255,107,53,0.15), rgba(247,147,30,0.08));
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(255, 107, 53, 0.2);
+      }
+
+      .project-item-tags {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .project-item-play {
+        color: #ff6b35;
+        font-size: 1.3rem !important;
+        font-variation-settings: 'FILL' 1, 'wght' 500;
+        animation: playPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes playPulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(0.9); }
+      }
+
+      .project-item-hint {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: rgba(255, 107, 53, 0.8);
+        margin-top: 0.2rem;
+      }
+
+      .project-item-hint .material-symbols-outlined {
+        font-size: 0.9rem;
+      }
+
+      /* Detail panel */
+      .project-item--detail {
+        cursor: pointer;
+        transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .project-item--detail:hover {
+        transform: translateY(-2px);
+      }
+
+      .project-item-arrow {
+        font-size: 1.3rem !important;
+        color: var(--text-2, rgba(255,255,255,0.6));
+        transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .project-item--detail.is-open .project-item-arrow {
+        transform: rotate(180deg);
+        color: var(--accent-1, #8b7bff);
+      }
+
+      .project-detail-panel {
+        display: none;
+        margin-top: 0.6rem;
+        padding-top: 0.6rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        animation: detailSlideIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .project-item--detail.is-open .project-detail-panel {
+        display: block;
+      }
+
+      @keyframes detailSlideIn {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .project-detail-grid {
+        display: grid;
+        gap: 0.45rem;
+        margin-bottom: 0.6rem;
+      }
+
+      .project-detail-item {
+        display: flex;
+        gap: 0.5rem;
+        align-items: baseline;
+      }
+
+      .project-detail-label {
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: var(--accent-1, #8b7bff);
+        text-transform: uppercase;
+        letter-spacing: 0.04rem;
+        white-space: nowrap;
+        min-width: 5.5rem;
+      }
+
+      .project-detail-value {
+        font-size: 0.82rem;
+        color: var(--text-2, rgba(255,255,255,0.7));
+        line-height: 1.4;
+      }
+
+      .project-detail-panel .btn {
+        margin-top: 0.3rem;
+      }
+    </style>
+
+    <script>
+      function swapToProject(projectId) {
+        // Get all featured views
+        const features = document.querySelectorAll('.project-feature[data-project]');
+        const listItems = document.querySelectorAll('.project-item--swappable[data-list-project]');
+
+        features.forEach(f => {
+          const isTarget = f.dataset.project === projectId;
+          f.style.display = isTarget ? '' : 'none';
+
+          // Handle iframe lazy loading for NQSH
+          if (isTarget && projectId === 'nqsh') {
+            const iframe = f.querySelector('iframe[data-src]');
+            if (iframe && !iframe.src.includes('youtube')) {
+              iframe.src = iframe.dataset.src;
+            }
+          }
+
+          // Stop NQSH video when hiding (VieGo keeps playing muted in background)
+          if (!isTarget && f.dataset.project === 'nqsh') {
+            const iframe = f.querySelector('iframe');
+            if (iframe) iframe.src = '';
+          }
+
+          // Re-trigger animation
+          if (isTarget) {
+            f.style.animation = 'none';
+            f.offsetHeight; // force reflow
+            f.style.animation = '';
+          }
+        });
+
+        // Toggle visibility directly in project list: 
+        // the active project is hidden from the list, while others resurface
+        listItems.forEach(item => {
+          if (item.dataset.listProject === projectId) {
+            item.style.display = 'none';
+          } else {
+            item.style.display = '';
+          }
+        });
+      }
+
+      function toggleDetail(el) {
+        // Close others first
+        document.querySelectorAll('.project-item--detail.is-open').forEach(item => {
+          if (item !== el) item.classList.remove('is-open');
+        });
+        el.classList.toggle('is-open');
+      }
+    </script>
+
     <div id="mainLayoutHost"></div>
 
     <script src="js/load-layout.js" defer></script>
