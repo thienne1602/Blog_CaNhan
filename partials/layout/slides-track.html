@@ -592,83 +592,84 @@
   </article>
 
   <article class="slide slide-achievements">
-    <div class="card bento">
-      <div class="bento-content">
-        <h2 data-i18n="s2a_title">Thành tựu nổi bật.</h2>
-        <p data-i18n="s2a_desc">
-          Các cột mốc nổi bật trong hành trình học tập và tham gia hoạt động,
-          thể hiện khả năng triển khai và làm việc nhóm.
-        </p>
-        <div class="edu-sections edu-sections-single">
-          <section class="edu-group">
-            <h3 class="edu-group-title" data-i18n="s2a_group1">Thành tựu</h3>
-            <div class="edu-group-list">
-              <article class="edu-card">
-                <div class="edu-year" data-i18n="s2_a1_time">2025</div>
-                <div class="edu-title" data-i18n="s2_a1_title">
-                  Giải Nhất Tài năng CNTT lần 10
-                </div>
-                <div class="edu-desc" data-i18n="s2_a1_desc">
-                  Khẳng định năng lực giải quyết bài toán nghiệp vụ thực tế.
-                </div>
-              </article>
-              <article class="edu-card">
-                <div class="edu-year" data-i18n="s2_a2_time">2025</div>
-                <div class="edu-title" data-i18n="s2_a2_title">
-                  Đồ án VieGo đạt điểm tối đa
-                </div>
-                <div class="edu-desc" data-i18n="s2_a2_desc">
-                  Hoàn thiện từ BA artifacts đến triển khai kỹ thuật.
-                </div>
-              </article>
-            </div>
-          </section>
+    <div class="card achv-card-redesign">
+      <!-- Header -->
+      <div class="achv-header">
+        <div class="achv-header-text">
+          <h2 data-i18n="s2a_title">Thành tựu nổi bật.</h2>
+          <p class="achv-subtitle" data-i18n="s2a_desc">
+            Các cột mốc nổi bật trong hành trình học tập và tham gia hoạt động,
+            thể hiện khả năng triển khai và làm việc nhóm.
+          </p>
         </div>
-        <div class="status">
-          <div class="box">
-            <div class="num">🏆 1</div>
-            <div class="label" data-i18n="s2a_stat1">Giải thưởng</div>
+        <div class="achv-stats-pills">
+          <span class="achv-pill">
+            <span class="material-symbols-outlined">workspace_premium</span>
+            Highlight
+          </span>
+        </div>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="achv-grid">
+        <!-- Top Prize (Winner) -->
+        <a href="assets/images/ảnh đoạt giải.jpg" target="_blank" class="achv-item achv-item--champion" title="Xem ảnh lớn">
+          <div class="achv-bg-img" style="background-image: url('assets/images/ảnh tham gia cuôc jthi.jpg');"></div>
+          <div class="achv-overlay"></div>
+          
+          <div class="achv-content">
+            <div class="achv-badge achv-badge--primary">
+              <span class="material-symbols-outlined">emoji_events</span>
+              Champion
+            </div>
+            <h3 class="achv-title" data-i18n="s2_a1_title">Giải Nhất Tài năng CNTT lần 10</h3>
+            <p class="achv-desc" data-i18n="s2_a1_desc">Khẳng định năng lực giải quyết bài toán nghiệp vụ thực tế.</p>
+            <div class="achv-year" data-i18n="s2_a1_time">2025</div>
           </div>
-          <div class="box">
-            <div class="num">100%</div>
-            <div class="label" data-i18n="s2a_stat2">Điểm đồ án</div>
+        </a>
+
+        <div class="achv-aside">
+          <!-- Milestone 1 -->
+          <div class="achv-item achv-item--milestone">
+            <div class="achv-content">
+              <div class="achv-badge achv-badge--secondary">
+                <span class="material-symbols-outlined">stars</span>
+                Perfect Score
+              </div>
+              <h3 class="achv-title" data-i18n="s2_a2_title">Đồ án VieGo đạt điểm tối đa</h3>
+              <p class="achv-desc" data-i18n="s2_a2_desc">Hoàn thiện từ BA artifacts đến triển khai kỹ thuật.</p>
+              <div class="achv-year" data-i18n="s2_a2_time">2025</div>
+            </div>
           </div>
-          <div class="box">
-            <div class="num">02</div>
-            <div class="label" data-i18n="s2a_stat3">Cột mốc chính</div>
-          </div>
-          <div class="box">
-            <div class="num">2025</div>
-            <div class="label" data-i18n="s2a_stat4">Năm nổi bật</div>
+
+          <!-- Highlight Image -->
+          <div class="achv-item achv-item--photo">
+            <img src="assets/images/ảnh đoạt giải.jpg" alt="Ảnh nhận giải thưởng thành tựu" loading="lazy">
+            <div class="achv-photo-caption">
+              <span class="material-symbols-outlined">photo_camera</span>
+              Khoảnh khắc trao giải
+            </div>
           </div>
         </div>
       </div>
-      <div class="bento-mosaic achievement-gallery">
-        <div class="bento-mini achievement-photo">
-          <img
-            src="assets/images/ảnh đoạt giải.jpg"
-            alt="Ảnh nhận giải thưởng thành tựu"
-            loading="lazy"
-          />
+
+      <!-- Bottom Stats -->
+      <div class="achv-bottom-stats">
+        <div class="achv-stat-box">
+          <div class="achv-stat-num">🏆 1</div>
+          <div class="achv-stat-label" data-i18n="s2a_stat1">Giải thưởng</div>
         </div>
-        <div class="bento-mini achievement-photo">
-          <img
-            src="assets/images/ảnh tham gia cuôc jthi.jpg"
-            alt="Ảnh tham gia cuộc thi"
-            loading="lazy"
-          />
+        <div class="achv-stat-box">
+          <div class="achv-stat-num">100%</div>
+          <div class="achv-stat-label" data-i18n="s2a_stat2">Điểm đồ án</div>
         </div>
-        <div class="bento-mini edu-key">
-          <div class="num">Highlight</div>
-          <div class="label" data-i18n="s2a_m1">
-            Giải Nhất Tài năng CNTT lần 10
-          </div>
+        <div class="achv-stat-box">
+          <div class="achv-stat-num">02</div>
+          <div class="achv-stat-label" data-i18n="s2a_stat3">Cột mốc chính</div>
         </div>
-        <div class="bento-mini edu-key">
-          <div class="num">Milestone</div>
-          <div class="label" data-i18n="s2a_m2">
-            VieGo đạt điểm tối đa đồ án
-          </div>
+        <div class="achv-stat-box">
+          <div class="achv-stat-num">2025</div>
+          <div class="achv-stat-label" data-i18n="s2a_stat4">Năm nổi bật</div>
         </div>
       </div>
     </div>

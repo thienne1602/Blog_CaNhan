@@ -2432,3 +2432,293 @@ body.light-mode .slide-education .bento-mini {
 .cert-link .material-symbols-outlined {
   font-size: 1.15rem;
 }
+
+/* ============================================
+   ACHIEVEMENTS SECTION REDESIGN
+   ============================================ */
+
+.achv-card-redesign {
+  display: flex !important;
+  flex-direction: column;
+  gap: 1rem !important;
+  overflow: hidden;
+  background: radial-gradient(circle at 0% 0%, rgba(139, 123, 255, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 100% 100%, rgba(247, 147, 30, 0.1) 0%, transparent 50%),
+              var(--glass);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.25rem !important;
+}
+
+.achv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.achv-header-text {
+  display: grid;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.achv-subtitle {
+  font-size: clamp(0.88rem, 1.1vw, 1rem) !important;
+  line-height: 1.5 !important;
+  color: var(--text-2);
+}
+
+.achv-stats-pills {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.achv-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-1);
+  white-space: nowrap;
+}
+
+.achv-pill .material-symbols-outlined {
+  font-size: 18px;
+  color: #fbbf24;
+}
+
+.achv-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1rem;
+  flex: 1;
+  min-height: 250px;
+}
+
+/* Base item styling */
+.achv-item {
+  position: relative;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-decoration: none;
+}
+
+.achv-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Background image handling */
+.achv-bg-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+  z-index: 0;
+}
+
+.achv-item:hover .achv-bg-img {
+  transform: scale(1.05);
+}
+
+.achv-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 10, 15, 0.95) 0%, rgba(10, 10, 15, 0.6) 50%, rgba(10, 10, 15, 0.2) 100%);
+  z-index: 1;
+}
+
+/* Content over images */
+.achv-content {
+  position: relative;
+  z-index: 2;
+  padding: 1.25rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.achv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  width: fit-content;
+  margin-bottom: 0.2rem;
+}
+
+.achv-badge .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.achv-badge--primary {
+  color: #fff;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.achv-badge--secondary {
+  color: #fff;
+  background: linear-gradient(135deg, #8b7bff, #6366f1);
+  border: 1px solid rgba(139, 123, 255, 0.5);
+  box-shadow: 0 4px 12px rgba(139, 123, 255, 0.3);
+}
+
+.achv-title {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.25;
+}
+
+.achv-desc {
+  margin: 0 !important;
+  font-size: 0.9rem !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  line-height: 1.4 !important;
+}
+
+.achv-year {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 0.3rem 0.6rem;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.achv-aside {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+}
+
+.achv-item--milestone {
+  background: radial-gradient(circle at top right, rgba(139, 123, 255, 0.15), transparent 70%), rgba(255, 255, 255, 0.03);
+  justify-content: center;
+}
+
+.achv-item--photo {
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.achv-item--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.achv-item--photo:hover img {
+  transform: scale(1.05);
+}
+
+.achv-photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.75rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.achv-photo-caption .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.achv-bottom-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.achv-stat-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 0.2rem;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  transition: background 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.achv-stat-box:hover {
+  background: rgba(255, 255, 255, 0.09);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.achv-stat-num {
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  font-weight: 800;
+  color: var(--text-1);
+}
+
+.achv-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-2);
+}
+
+body.light-mode .achv-item {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .achv-stat-box {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .achv-title, body.light-mode .achv-desc {
+  color: #fff !important; /* Keep white because of dark overlay */
+}
+
+body.light-mode .achv-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.1) 100%);
+}
+
+body.light-mode .achv-item--milestone {
+  background: #fff;
+}
+body.light-mode .achv-item--milestone .achv-title { color: var(--text-1) !important; }
+body.light-mode .achv-item--milestone .achv-desc { color: var(--text-2) !important; }
+body.light-mode .achv-item--milestone .achv-year { color: var(--text-1) !important; background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); backdrop-filter: none; }
